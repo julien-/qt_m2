@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include "myitem.h"
+#include <QGraphicsEllipseItem>
+
+#include "threesquareslayout.h"
+#include "graphicsellipseitem.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,7 +24,9 @@ private:
     Ui::MainWindow *ui;
 
     QGraphicsScene *scene;
-    MyItem *item;
+    ThreeSquaresLayout * layout;
+    GraphicsEllipseItem * movePoint;
+
 };
 
 #endif // MAINWINDOW_H

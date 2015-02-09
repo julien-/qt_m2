@@ -13,8 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    graphicsellipseitem.cpp \
+    threesquareslayout.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    graphicsellipseitem.h \
+    threesquareslayout.h
 
 FORMS    += mainwindow.ui

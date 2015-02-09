@@ -10,10 +10,18 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-       ///QSDqsdqsdqsd
+
     // create our object and add it to the scene
-    item = new MyItem(  ui->graphicsView->width(),  ui->graphicsView->height());
-    scene->addItem(item);
+    layout = new ThreeSquaresLayout(  ui->graphicsView->width(),  ui->graphicsView->height());
+    scene-> addItem(layout);
+
+    movePoint = new GraphicsEllipseItem(QRectF(layout->movePointPosX - 10, layout->movePointPosY -10, 20,20));
+    movePoint->setFlag(QGraphicsItem::ItemIsMovable);
+    movePoint->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    scene->addItem(movePoint);
+
+
+    connect(movePoint, SIGNAL(ItemMoved(QPointF)), layout, SLOT(update_center(QPointF)));
 }
 
 MainWindow::~MainWindow()
