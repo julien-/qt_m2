@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-
+       ///QSDqsdqsdqsd
     // create our object and add it to the scene
     item = new MyItem(  ui->graphicsView->width(),  ui->graphicsView->height());
     scene->addItem(item);
