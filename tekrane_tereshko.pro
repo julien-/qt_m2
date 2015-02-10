@@ -22,3 +22,5 @@ HEADERS  += mainwindow.h \
     threesquareslayout.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES +=

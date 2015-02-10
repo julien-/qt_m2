@@ -6,6 +6,8 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QObject>
+#include <QPicture>
+#include <QFileDialog>
 
 // class for customization
 class ThreeSquaresLayout :public QObject, public QGraphicsItem
@@ -30,6 +32,8 @@ protected:
     int height;
     int penWidth;
     int margin;
+
+    QString fileName;
 
 
 

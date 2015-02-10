@@ -1,5 +1,5 @@
 #include "threesquareslayout.h"
-
+#include <QPixmap>
 
 ThreeSquaresLayout::ThreeSquaresLayout(int width, int height)
 {
@@ -21,15 +21,21 @@ QRectF ThreeSquaresLayout::boundingRect() const
 
 void ThreeSquaresLayout::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-   QRectF rect = boundingRect();
 
    QPen pen(Qt::black,penWidth);
    pen.setStyle(Qt::DashLine);
 
-  // this->setFlag(GraphicsItemFlag::ItemIsMovable);
+   if  (fileName!= NULL){
+       QImage image(fileName);
+       QBrush brush(image);
+       painter->setBrush(brush);
+   }
+   else {
+       painter->setBrush(QBrush());
+   }
+
+
    painter->setPen(pen);
-  // painter->drawEllipse(QRectF(width/2 - 10, height/2 -10, 20,20 ));
-   // painter->drawRect(QRectF(0.0,0.0,this->width,this->height));
    painter->drawRoundedRect(QRectF(0.0 +margin ,0.0 +margin,movePointPosX - margin*2,movePointPosY-margin*2),radius,radius);
    painter->drawRoundedRect(QRectF(movePointPosX +margin,0.0+margin, width - movePointPosX - margin*2, movePointPosY -margin*2),radius,radius);
    painter->drawRoundedRect(QRectF(0.0 + margin, movePointPosY +margin, width - margin*2,height - movePointPosY - margin*2 ),radius,radius);
@@ -37,6 +43,7 @@ void ThreeSquaresLayout::paint(QPainter *painter, const QStyleOptionGraphicsItem
 
 void ThreeSquaresLayout::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    fileName = QFileDialog::getOpenFileName(NULL, tr("Open Image"), "/img/", tr("Image Files (*.png *.jpg *.bmp)"));
     update();
     QGraphicsItem::mousePressEvent(event);
 }
