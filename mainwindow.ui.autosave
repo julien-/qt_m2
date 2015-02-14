@@ -179,6 +179,9 @@
          </item>
          <item>
           <widget class="QSlider" name="horizontalSlider_2">
+           <property name="minimum">
+            <number>1</number>
+           </property>
            <property name="maximum">
             <number>20</number>
            </property>

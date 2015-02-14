@@ -28,3 +28,23 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::black, this);
+    if  (ui->radioButton_color_fond->isChecked() && color.isValid() )
+        layout->setBackgroundColor(color);
+    else if(color.isValid()){
+        layout->setCadreStrokeColor(color);
+    }
+}
+
+void MainWindow::on_horizontalSlider_valueChanged(int value)
+{
+    layout->setCornerRadius(value);
+}
+
+void MainWindow::on_horizontalSlider_2_valueChanged(int value)
+{
+    layout->setMargin(value);
+}
