@@ -1,6 +1,8 @@
 #ifndef ILAYOUT_H
 #define ILAYOUT_H
 
+#include <QColor>
+
 class ILayout
 {
 public:

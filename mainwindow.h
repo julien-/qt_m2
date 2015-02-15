@@ -5,9 +5,11 @@
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QColorDialog>
+#include <QGraphicsDropShadowEffect>
 
-#include "threesquareslayout.h"
 #include "graphicsellipseitem.h"
+#include "graphicsroundedrectangleitem.h"
+#include "threesquaresgraphicsscene.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,12 +30,17 @@ private slots:
 
     void on_horizontalSlider_2_valueChanged(int value);
 
+    void on_horizontalSlider_3_valueChanged(int value);
+
+    void on_checkBox_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
 
-    QGraphicsScene *scene;
-    ThreeSquaresLayout * layout;
+    ThreeSquaresGraphicsScene *scene;
     GraphicsEllipseItem * movePoint;
+
+    QGraphicsDropShadowEffect * effect;
 
 };
 
