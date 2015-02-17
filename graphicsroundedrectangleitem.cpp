@@ -6,6 +6,9 @@ GraphicsRoundedRectangleItem::GraphicsRoundedRectangleItem(QRectF rect, int radi
     this->radius = radius;
     pen = QPen(Qt::black);
     pen.setWidth(3);
+
+    image = QImage();
+    originalImage = QImage();
 }
 
 void GraphicsRoundedRectangleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -14,19 +17,27 @@ void GraphicsRoundedRectangleItem::paint(QPainter *painter, const QStyleOptionGr
 
     if  (image.isNull() == true)
        painter->setBrush(QBrush(Qt::white));
-   else
-       painter->setBrush(QBrush(image));
-    painter->drawRoundedRect(this->drawingCadre,radius,radius);
+    else
+    {
+         painter->setBrush(QBrush(image));
+    }
 
+     QTransform trans  = QTransform();
+     trans.translate(drawingCadre.x(), drawingCadre.y());
+     painter->setTransform(trans, true);
+     painter->drawRoundedRect(0,0,drawingCadre.width(), drawingCadre.height(), radius,radius);
 }
 
 QRectF GraphicsRoundedRectangleItem::boundingRect() const
 {
-    return this->drawingCadre;
+    return QRectF(drawingCadre.x() - pen.width(), drawingCadre.y() - pen.width(), drawingCadre.width()+ pen.width()*2, drawingCadre.height()+ pen.width()*2);
 }
 void GraphicsRoundedRectangleItem::updateCadre(QRectF rect){
     this->drawingCadre = rect;
-     update();
+
+    if  (originalImage.isNull() == false)
+        image = originalImage.scaled(this->drawingCadre.width(), this->drawingCadre.height(), Qt::KeepAspectRatioByExpanding);
+    update();
 }
 
 void GraphicsRoundedRectangleItem::setRadius(int radius){
@@ -36,15 +47,21 @@ void GraphicsRoundedRectangleItem::setRadius(int radius){
 
 void GraphicsRoundedRectangleItem::mousePressEvent(QGraphicsSceneMouseEvent *event){
     QString file =  QFileDialog::getOpenFileName(NULL, "Open Image", "/img/", "Image Files (*.png *.jpg *.bmp)");
-    if  (file!= NULL){
-        image = QImage(file);
+    if  (file!= NULL){ 
+        originalImage = QImage(file);
     }else{
-        image = QImage();
+        originalImage = QImage();
     }
-     update();
+    updateCadre(this->getDrawRect());
+    update();
 }
  QRectF GraphicsRoundedRectangleItem::getDrawRect(){
      return this->drawingCadre;
+ }
+
+ int GraphicsRoundedRectangleItem::type() const
+ {
+     return 8888;
  }
  void GraphicsRoundedRectangleItem::setCadreStrokeColor(QColor color){
      pen.setColor(color);

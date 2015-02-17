@@ -8,19 +8,29 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    mapper = new  QSignalMapper(this);
+    connect(ui->radioButton, SIGNAL(clicked()), mapper, SLOT(map()));
+    connect(ui->radioButton_2, SIGNAL(clicked()), mapper, SLOT(map()));
+    connect(ui->radioButton_3, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->radioButton, 1);
+    mapper->setMapping(ui->radioButton_2, 2);
+    mapper->setMapping(ui->radioButton_3, 3);
+    connect(mapper, SIGNAL(mapped(int)), this, SLOT(onLayoutchanged(int)));
+
+    textDialog = new TextDialog(this);
+    connect(textDialog, SIGNAL(onTextAccepted(QString,QFont, QColor)), this, SLOT(addTextItem(QString,QFont, QColor)));
+
     scene  = new ThreeSquaresGraphicsScene( ui->graphicsView->width(),ui->graphicsView->height(), this);
+
     ui->graphicsView->setScene(scene);
 
-    movePoint = new GraphicsEllipseItem(QRectF(scene->getMovePointPosX() - 10, scene->getMovePointPosY()  -15, 20,20));
-    movePoint->setFlag(QGraphicsItem::ItemIsMovable);
-    movePoint->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
-    scene->addItem(movePoint);
-
-    connect(movePoint, SIGNAL(ItemMoved(QPointF)), scene, SLOT(update_center(QPointF)));
     connect(ui->spinBox_3, SIGNAL(valueChanged(int)), scene, SLOT(setBlurRadius(int)));
     connect(ui->spinBox, SIGNAL(valueChanged(int)), scene, SLOT(setShadowOffsetX(int)));
     connect(ui->spinBox_2, SIGNAL(valueChanged(int)), scene, SLOT(setShadowOffsetY(int)));
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), scene, SLOT(changePenStyle(int)));
+    connect(ui->horizontalSlider_2, SIGNAL(valueChanged(int)), scene, SLOT(setMargin(int)));
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), scene, SLOT(setCornerRadius(int)));
+    connect(ui->horizontalSlider_3, SIGNAL(valueChanged(int)), scene, SLOT(setCadreStrokeWidth(int)));
 
 }
 
@@ -28,7 +38,11 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+void MainWindow::addTextItem(QString str, QFont font, QColor color){
+        QGraphicsTextItem * text = scene->addText(str, font);
+        text->setDefaultTextColor(color);
+        text->setFlag(QGraphicsItem::ItemIsMovable);
+}
 void MainWindow::on_pushButton_clicked()
 {
     QColor color = QColorDialog::getColor(Qt::black, this);
@@ -38,22 +52,6 @@ void MainWindow::on_pushButton_clicked()
         scene->setCadreStrokeColor(color);
     }
 }
-
-void MainWindow::on_horizontalSlider_valueChanged(int value)
-{
-    scene->setCornerRadius(value);
-}
-
-void MainWindow::on_horizontalSlider_2_valueChanged(int value)
-{
-    scene->setMargin(value);
-}
-
-void MainWindow::on_horizontalSlider_3_valueChanged(int value)
-{
-    scene->setCadreStrokeWidth(value);
-}
-
 void MainWindow::on_checkBox_stateChanged(int arg1)
 {
     if(arg1 == Qt::Checked){
@@ -67,4 +65,48 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
         ui->spinBox_3->setDisabled(true);
         scene->disableShadow();
     }
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    textDialog->show();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    QImage img = scene->getSceneImage();
+    QString path = QFileDialog::getSaveFileName(NULL, tr("Save as image"),"", tr("Images (*.jpg);; Images (*.png)"));
+    if (path.isEmpty())
+            return;
+    img.save(path);
+
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    this->close();
+}
+
+void MainWindow::onLayoutchanged(int index){
+    switch (index) {
+    case 1:
+        delete scene;
+        scene  = new ThreeSquaresGraphicsScene( ui->graphicsView->width(),ui->graphicsView->height(), this);
+        ui->graphicsView->setScene(scene);
+
+        break;
+    case 2:
+        delete scene;
+        scene  = new CurvedLinesScene( ui->graphicsView->width(),ui->graphicsView->height(), this);
+        ui->graphicsView->setScene(scene);
+        break;
+    case 3:
+        delete scene;
+        scene  = new FiveCadresScene(ui->graphicsView->width(),ui->graphicsView->height(), this);
+        ui->graphicsView->setScene(scene);
+        break;
+    default:
+        break;
+    }
+
 }

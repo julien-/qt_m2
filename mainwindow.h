@@ -6,10 +6,15 @@
 #include <QGraphicsEllipseItem>
 #include <QColorDialog>
 #include <QGraphicsDropShadowEffect>
+#include <QFontDialog>
+#include <QSignalMapper>
 
 #include "graphicsellipseitem.h"
 #include "graphicsroundedrectangleitem.h"
 #include "threesquaresgraphicsscene.h"
+#include "curvedlinesscene.h"
+#include "textdialog.h"
+#include "fivecadresscene.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,21 +31,27 @@ public:
 private slots:
     void on_pushButton_clicked();
 
-    void on_horizontalSlider_valueChanged(int value);
-
-    void on_horizontalSlider_2_valueChanged(int value);
-
-    void on_horizontalSlider_3_valueChanged(int value);
-
     void on_checkBox_stateChanged(int arg1);
+
+    void on_pushButton_2_clicked();
+
+    void addTextItem(QString str, QFont font, QColor color);
+
+    void on_actionSave_triggered();
+
+    void on_actionExit_triggered();
+
+    void onLayoutchanged(int index);
 
 private:
     Ui::MainWindow *ui;
 
-    ThreeSquaresGraphicsScene *scene;
-    GraphicsEllipseItem * movePoint;
+    BaseGraphicsScene *scene;
 
-    QGraphicsDropShadowEffect * effect;
+    TextDialog  * textDialog;
+    QSignalMapper *mapper;
+
+
 
 };
 

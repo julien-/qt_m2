@@ -5,6 +5,9 @@ GraphicsEllipseItem::GraphicsEllipseItem(QRectF rect) :
 {
 
 }
+QRectF GraphicsEllipseItem::boundingRect() const{
+    return this->rect();
+}
 
 QVariant GraphicsEllipseItem::itemChange( GraphicsItemChange change, const QVariant  &value )
 {
@@ -12,4 +15,7 @@ QVariant GraphicsEllipseItem::itemChange( GraphicsItemChange change, const QVari
     emit ItemMoved(value.toPointF());
   }
   return QGraphicsEllipseItem::itemChange(change, value);
+}
+int GraphicsEllipseItem::type() const{
+    return 4545;
 }

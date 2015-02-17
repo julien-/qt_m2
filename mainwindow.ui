@@ -62,7 +62,7 @@
           <x>10</x>
           <y>0</y>
           <width>131</width>
-          <height>489</height>
+          <height>527</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -258,7 +258,10 @@
             <number>1</number>
            </property>
            <property name="value">
-            <number>15</number>
+            <number>10</number>
+           </property>
+           <property name="sliderPosition">
+            <number>10</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -374,6 +377,20 @@
            </item>
           </layout>
          </item>
+         <item>
+          <widget class="Line" name="line_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="text">
+            <string>Add text</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
        <widget class="QGraphicsView" name="graphicsView">
@@ -382,7 +399,7 @@
           <x>150</x>
           <y>0</y>
           <width>641</width>
-          <height>561</height>
+          <height>541</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -406,6 +423,23 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -416,6 +450,21 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QObject>
 #include <QStyleOptionGraphicsItem>
+#include <QGraphicsEffect>
 
 class GraphicsRoundedRectangleItem: public QObject, public QGraphicsRectItem
 {
@@ -20,11 +21,13 @@ public:
     void setCadreStrokeWidth(int val);
     void setPenStyle(int style);
     QRectF getDrawRect();
+    int type() const;
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     QRectF drawingCadre;
+    QImage originalImage;
     QImage image;
     int radius;
     QPen pen;

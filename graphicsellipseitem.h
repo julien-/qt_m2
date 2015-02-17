@@ -10,6 +10,8 @@ class GraphicsEllipseItem : public QObject, public QGraphicsEllipseItem
 public:
     explicit GraphicsEllipseItem( QRectF rect);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    int type() const;
+    QRectF boundingRect() const;
 
 signals:
      void ItemMoved(QPointF p);
