@@ -41,29 +41,65 @@ void ThreeSquaresGraphicsScene::updateCadresRect(){
 }
 
 void ThreeSquaresGraphicsScene::setMovePoint(QPointF p, int index){
+
+    if (movePoint[0]->x() < width - movePointBoundLimit && movePoint[0]->x() > movePointBoundLimit && movePoint[0]->y() > movePointBoundLimit && movePoint[0]->y() < height - movePointBoundLimit )
         updateCadresRect();
+    else{
+        movePoint[0]->blockSignals(true);
+        if(movePoint[0]->x() >width - movePointBoundLimit){
+            movePoint[0]->setPos(width - movePointBoundLimit ,movePoint[0]->y());
+            setMovePoint(p, index);
+        }
+        else if(movePoint[0]->x() < movePointBoundLimit){
+             movePoint[0]->setPos(movePointBoundLimit, movePoint[0]->y());
+              setMovePoint(p, index);
+        }
+        else if( movePoint[0]->y() < movePointBoundLimit){
+            movePoint[0]->setPos(movePoint[0]->x(),movePointBoundLimit);
+             setMovePoint(p, index);
+            }
+        else if( movePoint[0]->y() > height - movePointBoundLimit ){
+            movePoint[0]->setPos(movePoint[0]->x(), height - movePointBoundLimit );
+              setMovePoint(p, index);
+            }
+        movePoint[0]->blockSignals(false);
+        updateCadresRect();
+    }
 }
 
-void ThreeSquaresGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void ThreeSquaresGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    QGraphicsItem * item = itemAt(event->scenePos(), QTransform());
+    QGraphicsItem * item = itemAt(mouseEvent->scenePos(), QTransform());
 
     if(item != NULL && (item->type() == QGraphicsTextItem::Type || item->type() == 4545)){
-        QGraphicsScene::mousePressEvent(event);
+        QGraphicsScene::mousePressEvent(mouseEvent);
+
     }
-    else{
-        for(int i=0; i<3; i++){
-            GraphicsRoundedRectangleItem * item = ((GraphicsRoundedRectangleItem*)this->items(Qt::AscendingOrder).at(i));
-            if (item->getDrawRect().intersects(QRectF(event->scenePos().x(), event->scenePos().y(),1,1))){
-                item->mousePressEvent(event);
-            }
-        }
-         QGraphicsScene::mousePressEvent(event);
+    else if (item != NULL){
+        ((GraphicsRoundedRectangleItem*)item)->mousePressEvent(mouseEvent);
+         updateCadresRect();
     }
 }
 
 void ThreeSquaresGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(movePoint[0]->x() >width - movePointBoundLimit){
+        movePoint[0]->setPos(width - movePointBoundLimit ,movePoint[0]->y());
+        mouseReleaseEvent(event);
+    }
+    else if(movePoint[0]->x() < movePointBoundLimit){
+         movePoint[0]->setPos(movePointBoundLimit, movePoint[0]->y());
+          mouseReleaseEvent(event);
+    }
+    else if( movePoint[0]->y() < movePointBoundLimit){
+        movePoint[0]->setPos(movePoint[0]->x(),movePointBoundLimit);
+         mouseReleaseEvent(event);
+        }
+    else if( movePoint[0]->y() > height - movePointBoundLimit ){
+        movePoint[0]->setPos(movePoint[0]->x(), height - movePointBoundLimit );
+         mouseReleaseEvent(event);
+        }
+    QGraphicsScene::mouseReleaseEvent(event);
     updateCadresRect();
 }
 void ThreeSquaresGraphicsScene::setCornerRadius(int r){

@@ -21,10 +21,26 @@ void GraphicsPolygonItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     if  (image.isNull() == true)
        painter->setBrush(QBrush(Qt::white));
     else
-    {
          painter->setBrush(QBrush(image));
+
+    QTransform trans  = QTransform();
+    trans.translate(polygon().boundingRect().x(), polygon().boundingRect().y());
+    painter->setTransform(trans, true);
+
+    QPolygonF p;
+    for(int i=0; i<polygon().size(); i++)
+    {
+        p.append(QPointF(polygon().at(i).x() - polygon().boundingRect().x(), polygon().at(i).y() - polygon().boundingRect().y()));
     }
-    painter->drawPolygon(this->polygon());
+    painter->drawPolygon(p);
+
+
+   // painter->drawPolygon(this->polygon());
+}
+
+QRectF GraphicsPolygonItem::boundingRect() const
+{
+    return QRectF(polygon().boundingRect().x()- pen.width(), polygon().boundingRect().y() - pen.width(), polygon().boundingRect().width()+ pen.width()*2, polygon().boundingRect().height()+ pen.width()*2);
 }
 
 void GraphicsPolygonItem::setCadreStrokeColor(QColor color)
@@ -72,6 +88,7 @@ void GraphicsPolygonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }else{
         originalImage = QImage();
     }
+    update_image();
     update();
 }
 

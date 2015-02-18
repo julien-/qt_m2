@@ -16,6 +16,7 @@ public:
     void sceneChanged();
 
 private:
+
     int curvatureSize;
     void updateCadres();
     void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent);

@@ -50,6 +50,7 @@ private:
 
     TextDialog  * textDialog;
     QSignalMapper *mapper;
+    void sceneConnect();
 
 
 

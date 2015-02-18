@@ -6,6 +6,7 @@ BaseGraphicsScene::BaseGraphicsScene(int w, int h): QGraphicsScene(0,0,w,h)
     this->height =h -2;
     this->setSceneRect(0,0,w-2,h-2);
 
+    movePointBoundLimit = 100;
     movePointsCount = 1;
     movePoint = new GraphicsEllipseItem*[movePointsCount];
     movePoint[0] = new GraphicsEllipseItem(QRectF(-10, -10, 20,20));
@@ -76,7 +77,8 @@ void BaseGraphicsScene::disableShadow()
 
 QImage BaseGraphicsScene::getSceneImage()
 {
-    setMovePointVisible(false);
+    for(int i =0; i< movePointsCount; i++)
+    setMovePointVisible(false, i);
 
     QImage pixmap(QSize(this->width, this->height), QImage::Format_ARGB32);
     pixmap.fill(Qt::white);
@@ -86,7 +88,8 @@ QImage BaseGraphicsScene::getSceneImage()
 
     this->render(&imagePainter);
 
-    setMovePointVisible(true);
+    for(int i =0; i< movePointsCount; i++)
+    setMovePointVisible(true, i);
 
     return pixmap;
 }

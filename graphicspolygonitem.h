@@ -4,6 +4,7 @@
 #include <QGraphicsPolygonItem>
 #include <QFileDialog>
 #include <QPainter>
+#include <QTransform>
 
 class GraphicsPolygonItem : public QGraphicsPolygonItem
 {
@@ -15,7 +16,7 @@ public:
     int type() const;
     enum { Type = 999 };
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
+     QRectF boundingRect() const;
 
     void setCadreStrokeColor(QColor color);
     void setCadreStrokeWidth(int val);

@@ -24,14 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->graphicsView->setScene(scene);
 
-    connect(ui->spinBox_3, SIGNAL(valueChanged(int)), scene, SLOT(setBlurRadius(int)));
-    connect(ui->spinBox, SIGNAL(valueChanged(int)), scene, SLOT(setShadowOffsetX(int)));
-    connect(ui->spinBox_2, SIGNAL(valueChanged(int)), scene, SLOT(setShadowOffsetY(int)));
-    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), scene, SLOT(changePenStyle(int)));
-    connect(ui->horizontalSlider_2, SIGNAL(valueChanged(int)), scene, SLOT(setMargin(int)));
-    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), scene, SLOT(setCornerRadius(int)));
-    connect(ui->horizontalSlider_3, SIGNAL(valueChanged(int)), scene, SLOT(setCadreStrokeWidth(int)));
-
+    sceneConnect();
 }
 
 MainWindow::~MainWindow()
@@ -42,6 +35,12 @@ void MainWindow::addTextItem(QString str, QFont font, QColor color){
         QGraphicsTextItem * text = scene->addText(str, font);
         text->setDefaultTextColor(color);
         text->setFlag(QGraphicsItem::ItemIsMovable);
+        if (ui->checkBox->isChecked()){
+            QGraphicsDropShadowEffect * effect = new QGraphicsDropShadowEffect();
+            effect->setOffset(ui->spinBox->value(),ui->spinBox_2->value());
+            effect->setBlurRadius(ui->spinBox_3->value());
+            text->setGraphicsEffect(effect);
+        }
 }
 void MainWindow::on_pushButton_clicked()
 {
@@ -93,20 +92,33 @@ void MainWindow::onLayoutchanged(int index){
         delete scene;
         scene  = new ThreeSquaresGraphicsScene( ui->graphicsView->width(),ui->graphicsView->height(), this);
         ui->graphicsView->setScene(scene);
-
+        sceneConnect();
         break;
     case 2:
         delete scene;
         scene  = new CurvedLinesScene( ui->graphicsView->width(),ui->graphicsView->height(), this);
         ui->graphicsView->setScene(scene);
+        sceneConnect();
         break;
     case 3:
         delete scene;
         scene  = new FiveCadresScene(ui->graphicsView->width(),ui->graphicsView->height(), this);
         ui->graphicsView->setScene(scene);
+        sceneConnect();
         break;
     default:
         break;
     }
+}
+
+void MainWindow::sceneConnect()
+{
+    connect(ui->spinBox_3, SIGNAL(valueChanged(int)), scene, SLOT(setBlurRadius(int)));
+    connect(ui->spinBox, SIGNAL(valueChanged(int)), scene, SLOT(setShadowOffsetX(int)));
+    connect(ui->spinBox_2, SIGNAL(valueChanged(int)), scene, SLOT(setShadowOffsetY(int)));
+    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), scene, SLOT(changePenStyle(int)));
+    connect(ui->horizontalSlider_2, SIGNAL(valueChanged(int)), scene, SLOT(setMargin(int)));
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), scene, SLOT(setCornerRadius(int)));
+    connect(ui->horizontalSlider_3, SIGNAL(valueChanged(int)), scene, SLOT(setCadreStrokeWidth(int)));
 
 }

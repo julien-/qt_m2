@@ -1,6 +1,6 @@
 #include "graphicsroundedrectangleitem.h"
 
-GraphicsRoundedRectangleItem::GraphicsRoundedRectangleItem(QRectF rect, int radius)
+GraphicsRoundedRectangleItem::GraphicsRoundedRectangleItem(QRectF rect, int radius):QGraphicsRectItem(rect)
 {
     this->drawingCadre = rect;
     this->radius = radius;
@@ -34,6 +34,7 @@ QRectF GraphicsRoundedRectangleItem::boundingRect() const
 }
 void GraphicsRoundedRectangleItem::updateCadre(QRectF rect){
     this->drawingCadre = rect;
+    this->setRect(this->drawingCadre);
 
     if  (originalImage.isNull() == false)
         image = originalImage.scaled(this->drawingCadre.width(), this->drawingCadre.height(), Qt::KeepAspectRatioByExpanding);

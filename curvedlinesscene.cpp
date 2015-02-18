@@ -5,6 +5,7 @@ CurvedLinesScene::CurvedLinesScene(int w, int h, QObject *parent): BaseGraphicsS
     this->movePoint[0]->setPos(w/2,h/2);
 
     curvatureSize = w/6;
+    movePointBoundLimit = curvatureSize + 100;
 
     for(int i=0; i<4; i++){
         GraphicsPolygonItem * polygonItem=new GraphicsPolygonItem();
@@ -73,13 +74,51 @@ void CurvedLinesScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void CurvedLinesScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(movePoint[0]->x() >width - movePointBoundLimit){
+        movePoint[0]->setPos(width - movePointBoundLimit ,movePoint[0]->y());
+        mouseReleaseEvent(event);
+    }
+    else if(movePoint[0]->x() < movePointBoundLimit){
+         movePoint[0]->setPos(movePointBoundLimit, movePoint[0]->y());
+          mouseReleaseEvent(event);
+    }
+    else if( movePoint[0]->y() < movePointBoundLimit){
+        movePoint[0]->setPos(movePoint[0]->x(),movePointBoundLimit);
+         mouseReleaseEvent(event);
+        }
+    else if( movePoint[0]->y() > height - movePointBoundLimit ){
+        movePoint[0]->setPos(movePoint[0]->x(), height - movePointBoundLimit );
+         mouseReleaseEvent(event);
+        }
+    QGraphicsScene::mouseReleaseEvent(event);
     updateCadres();
 }
 
 void CurvedLinesScene::setMovePoint(QPointF p, int index)
 {
-    updateCadres();
-
+    if (movePoint[0]->x() < width - movePointBoundLimit && movePoint[0]->x() > movePointBoundLimit && movePoint[0]->y() > movePointBoundLimit && movePoint[0]->y() < height - movePointBoundLimit )
+        updateCadres();
+    else{
+        movePoint[0]->blockSignals(true);
+        if(movePoint[0]->x() >width - movePointBoundLimit){
+            movePoint[0]->setPos(width - movePointBoundLimit ,movePoint[0]->y());
+            setMovePoint(p, index);
+        }
+        else if(movePoint[0]->x() < movePointBoundLimit){
+             movePoint[0]->setPos(movePointBoundLimit, movePoint[0]->y());
+              setMovePoint(p, index);
+        }
+        else if( movePoint[0]->y() < movePointBoundLimit){
+            movePoint[0]->setPos(movePoint[0]->x(),movePointBoundLimit);
+             setMovePoint(p, index);
+            }
+        else if( movePoint[0]->y() > height - movePointBoundLimit ){
+            movePoint[0]->setPos(movePoint[0]->x(), height - movePointBoundLimit );
+              setMovePoint(p, index);
+            }
+        movePoint[0]->blockSignals(false);
+        updateCadres();
+    }
 }
 
 void CurvedLinesScene::changePenStyle(int index)

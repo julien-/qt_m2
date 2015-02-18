@@ -9,6 +9,13 @@ QRectF GraphicsEllipseItem::boundingRect() const{
     return this->rect();
 }
 
+void GraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    if(isEnabled())
+    QGraphicsEllipseItem::paint(painter,option,widget);
+
+}
+
 QVariant GraphicsEllipseItem::itemChange( GraphicsItemChange change, const QVariant  &value )
 {
   if (change == ItemPositionChange){

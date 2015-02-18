@@ -41,6 +41,7 @@ protected:
      int width;
      int height;
      int movePointsCount;
+     int movePointBoundLimit;
 
 private:
 

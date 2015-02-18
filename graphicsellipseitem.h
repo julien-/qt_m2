@@ -12,6 +12,8 @@ public:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     int type() const;
     QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 
 signals:
      void ItemMoved(QPointF p);
